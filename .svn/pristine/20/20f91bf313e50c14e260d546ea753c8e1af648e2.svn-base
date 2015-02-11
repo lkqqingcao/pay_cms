@@ -1,0 +1,58 @@
+auth_login_login=login
+auth_login_username=username
+auth_login_password=password
+auth_login_checkcode=Captcha
+auth_login_checkcode_refresh=Click here for a new code
+
+auth_index_systemname=social audit system
+auth_index_welcome=welcome
+auth_index_change_passwd=change password
+auth_index_loginout=logout
+auth_index_dialog_change_passwd=change your password
+auth_index_dialog_old_passwd=old password
+auth_index_dialog_new_passwd=new password
+auth_index_dialog_repeat_passwd=repeat new password
+
+auth_user_list_button_add=Add
+auth_user_list_column_name=Name
+auth_user_list_column_username=Username
+auth_user_list_column_email=Email
+auth_user_list_column_desc=Description
+auth_user_list_column_status=Status
+auth_user_list_column_modify=Modify
+auth_user_list_column_enable=enable
+auth_user_list_column_disable=disable
+auth_user_list_column_enableor=enable/disable
+auth_user_list_column_resetpasswd=Reset Password
+auth_user_list_column_allocate=Allocate Role
+auth_user_dialog_modify=User Modify
+
+auth_user_allocaterole_return=Return User Manage
+auth_user_allocate_button_allocate=Allocate Role
+auth_user_allocate_column_name=Name
+auth_user_allocate_column_desc=Description
+
+auth_role_list_button_add=Add
+auth_role_list_button_mod=Modify
+auth_role_list_column_name=Name
+auth_role_name=Role Name
+auth_role_list_column_desc=Description
+auth_role_list_column_allocate=Allocate Resource
+
+
+auth_role_allocate_return=Return Role Manage
+auth_role_allocate_button_add=Add
+auth_role_allocate_column_allocate=Allocate Resource
+auth_role_allocate_column_pattern=Pattern
+auth_role_allocate_column_resourcename=Resource Name
+auth_role_allocate_column_desc=Description
+
+
+auth_resource_button_add=Add
+auth_resource_column_name=Name
+auth_resource_column_desc=Description
+auth_resource_column_pattern=Pattern
+auth_resource_column_mod=Modfiy
+auth_resource_dialog_resource=Resource
+
+auth_user_list_column_username_rule=Digit\u3001Letter

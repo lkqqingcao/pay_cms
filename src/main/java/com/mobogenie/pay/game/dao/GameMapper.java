@@ -1,0 +1,33 @@
+/**
+ *  Copyright (c)  2011-2020 Changyou, Inc.
+ *  All rights reserved.
+ *
+ *  This software is the confidential and proprietary information of Changyou, 
+ *  Inc. ("Confidential Information"). You shall not
+ *  disclose such Confidential Information and shall use it only in
+ *  accordance with the terms of the license agreement you entered into with Changyou.
+ */
+package com.mobogenie.pay.game.dao;
+
+import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
+import com.mobogenie.pay.game.domain.Game;
+import com.mobogenie.pay.game.domain.GameCount;
+
+/**
+ * 
+ * @author wanghongfeng
+ * @date 2014年9月16日
+ */
+@Repository
+public interface GameMapper {
+	 List<Game> query(Game game);
+	 Game  queryOne(Game game);
+	 int   count(Game game);
+	 int   update(Game game);
+	 int   insert(Game game);
+	 int   delete(Game game);	 
+	 List<GameCount> querycount();
+}

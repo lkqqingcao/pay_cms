@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mobogenie.pay.auth.dao.UserMapper">
+
+    <sql id="field">
+        id,
+        description,
+        email,
+        name,
+        username,
+        password,
+        enable
+    </sql>
+
+
+    <sql id="orderby">
+        <if test='_orderby != null'>
+            order by
+            <foreach collection="_orderby" item="item" index="index" separator=",">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="limit">
+        <if test='_offset != null and _limit != null'>
+            limit #{_offset}, #{_limit}
+        </if>
+
+        <if test='_offset == null and _limit != null'>
+            limit #{_limit}
+        </if>
+    </sql>
+    
+    
+    
+     <sql id="condition">
+        <where>
+           <if test="user!=null" >
+            <if test="user.id != null">
+                and id = #{user.id}
+            </if>
+            <if test="user.description != null">
+                and description = #{user.description}
+            </if>
+            <if test="user.email != null">
+                and email = #{user.email}
+            </if>
+            <if test="user.name != null">
+                and name = #{user.name}
+            </if>
+             <if test="user.username != null">
+                and username = #{user.username}
+            </if>
+             <if test="user.password != null">
+                and password = #{user.password}
+            </if>
+             <if test="user.enable != null">
+                and enable = #{user.enable}
+            </if>
+           </if>
+            <if test="notInList != null">
+               and id not in 
+               <foreach item="item" index="index" collection="notInList" open="(" separator="," close=")" >  
+               #{item}
+               </foreach>
+            </if>
+        </where>
+    </sql>
+
+    <sql id="sets">
+        <set>
+            <if test="description !=null">
+                description = #{description},
+            </if>
+            <if test="name !=null">
+                name = #{name},
+            </if>
+            <if test="email !=null">
+                email = #{email},
+            </if>
+            <if test="username !=null">
+                username = #{username},
+            </if>
+            <if test="password !=null">
+                password = #{password},
+            </if>
+            <if test="enable !=null">
+                enable = #{enable},
+            </if>
+        </set>
+    </sql>
+
+    <select id="query" resultType="user">
+        select
+        <include refid="field"/>
+        from T_USER
+         <include refid="condition"/>
+        order by id desc
+        <include refid="limit"/>
+    </select>
+    
+    <select id="queryByUsername" resultType="user">
+        select
+        <include refid="field"/>
+        from T_USER
+        where username = #{username}
+    </select>
+    
+    
+     <select id="count" resultType="_int">
+        select
+        count(1)
+        from T_USER
+        <include refid="condition"/>
+        order by id desc
+    </select>
+
+    <update id="update" >
+        update T_USER
+        <include refid="sets"/>
+        where  id=#{id};
+     </update>
+
+    <insert id="insert" parameterType="user">
+        insert into T_USER
+        (
+            description,
+            email,
+            name,
+            username,
+            password,
+            enable
+        )values
+        (
+           #{description},
+           #{email},
+           #{name},
+           #{username},
+           #{password},
+           #{enable}
+        )
+    </insert>
+
+
+</mapper>

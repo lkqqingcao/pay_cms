@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+    http://www.springframework.org/schema/security
+    http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+   <http pattern="/static/**" security="none"></http>
+   
+   <http auto-config="true"  pattern="**" access-denied-page="/WEB-INF/403.jsp"  access-decision-manager-ref="accessDecisionManager">
+	  <!-- access 'url' if has not loginin,
+	       redirect to 'login-page' with a form which action is 'login-processing-url',
+	       if login failer redirect to authentication-failure-url
+	       else login success redirect to default-target-url
+	       so must set accessable to these urls for anonymous_user 
+	   -->
+	  <form-login   login-page="${security.login-page}"
+        			login-processing-url="${security.login-processing-url}"
+                    authentication-failure-url="${security.authentication-failure-url}"
+                    default-target-url="${security.default-target-url}" 
+                    always-use-default-target="true"
+                    />
+      <logout logout-url="${security.logout-url}"  logout-success-url="${security.logout-success-url}" invalidate-session="true"/>
+	  <form-login />
+	  <csrf request-matcher-ref="specialRequestMatcher"/>
+	  <headers> 
+	     <content-type-options />
+	     <frame-options policy="SAMEORIGIN" />
+	     <xss-protection />
+	  </headers>
+	  <!--  从数据库中加载interceptor urls,xml配置留给内置interceptor使用  -->
+	  <custom-filter ref="customFilterSecurityInterceptor" before="FILTER_SECURITY_INTERCEPTOR" /> 
+	 <!--  <custom-filter ref="captchaFilter" before="FORM_LOGIN_FILTER"/> -->
+	  <custom-filter ref="cookieLocaleFilter"  after="HEADERS_FILTER"/>
+	  <custom-filter ref="userLogFilter"  after="LAST"/>
+   </http> 
+   
+   <beans:bean id="roleVoter"  class="org.springframework.security.access.vote.RoleVoter" >
+          <beans:property name="rolePrefix" value="ROLE" />
+    </beans:bean>
+   
+   <beans:bean id="accessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
+    <beans:property name="allowIfAllAbstainDecisions" value="true" />
+    <beans:constructor-arg index="0" name="decisionVoters">
+         <beans:list>
+          <beans:ref  local="roleVoter" />
+          <beans:bean class="org.springframework.security.access.vote.AuthenticatedVoter"/>
+       </beans:list>
+    </beans:constructor-arg>
+</beans:bean>
+   
+   <!-- 为了能将interceptor-url从数据库获取而定制的 Interceptor,并在http 标签里面定义在默认interceptor执行前执行
+        因为所有filter只执行一次，所以执行完该自定义interceptor，spring内置interceptor将不再执行拦截；另外一种方案是
+        使用beanPostProcessor修改spring内置的interceptor -->
+   <beans:bean id="customFilterSecurityInterceptor" class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor" >  
+        <beans:property name="authenticationManager" ref="authenticationManager"/>
+        <beans:property name="accessDecisionManager" ref="accessDecisionManager"/>
+        <beans:property name="securityMetadataSource" ref="customeMetadataSource"/>
+   </beans:bean>
+   
+   
+    <authentication-manager  alias="authenticationManager"  >
+	  <authentication-provider user-service-ref="customUserDetailsService">
+		<password-encoder hash="md5" >
+		   <salt-source system-wide="pay"/>
+		</password-encoder>
+	</authentication-provider>
+    </authentication-manager>
+
+</beans:beans>

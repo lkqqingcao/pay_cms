@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 	xmlns:context="http://www.springframework.org/schema/context" 	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	 xmlns:p="http://www.springframework.org/schema/p"   	xsi:schemaLocation="
+	  http://www.springframework.org/schema/beans
+	  http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+	  http://www.springframework.org/schema/mvc
+	  http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+	  http://www.springframework.org/schema/context
+	  http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+ 
+    <bean id="freemarkerConfigurer" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath" value="/WEB-INF/views" />
+		<property name="freemarkerSettings">
+			<props>
+				<prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
+				<prop key="default_encoding">UTF-8</prop>
+				<prop key="number_format">0.##########</prop>
+				<prop key="auto_import">common/common.ftl as common, common/spring.ftl as spring</prop>
+				<prop key="template_update_delay">0</prop>
+				<prop key="template_exception_handler">ignore</prop>
+				<!-- prop key="classic_compatible">true</prop --> 
+			</props>
+		</property>
+		<property name="freemarkerVariables">
+			<map>
+				<entry key="ctx"        value="${ctx}" />
+				<entry key="uploadPath"        value="${uploadPath}" />
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="cache" value="true" />
+		<!-- spring对宏的支持 -->
+		<property name="exposeSpringMacroHelpers" value="true" />
+		<!-- spring 将session暴露出来 -->
+		<property name="exposeSessionAttributes" value="true" />
+		<property name="exposeRequestAttributes" value="true" />
+		<property name="requestContextAttribute" value="rc" />
+		<property name="suffix" value=".ftl" />
+		<property name="contentType" value="text/html; charset=UTF-8" />
+	</bean>
+  
+   <bean id="conversionService"  class="org.springframework.format.support.FormattingConversionServiceFactoryBean">    
+     <property name="converters">  
+       <list>
+          <bean class="com.mobogenie.framework.spring.CustomerIntConverter"></bean>
+       </list> 
+    </property>
+   </bean>
+  
+   <bean id="fastJsonConverter" class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+        <property name="supportedMediaTypes">
+                <list>
+                    <value>text/plain;charset=utf-8</value>  
+                    <value>text/html;charset=utf-8</value>  
+                    <value>text/json;charset=utf-8</value>  
+                    <value>application/json;charset=utf-8</value>  
+                </list>
+        </property>
+   </bean>
+  
+    
+    <mvc:annotation-driven conversion-service="conversionService">
+       <mvc:message-converters register-defaults="true" >
+         <ref bean="fastJsonConverter" />
+       </mvc:message-converters>
+    </mvc:annotation-driven>
+ 
+ 
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">   
+        <property name="basenames">
+		   	<list>
+		   		<value>message/auth</value>
+		   		<value>message/audit</value>
+		   		<value>message/error</value>
+		   		<value>message/navigate</value>
+		   	</list>
+		</property> 
+        <property name="useCodeAsDefaultMessage" value="true" />   
+    </bean>   
+    
+    
+    <bean id="customMessageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">  
+        <property name="defaultEncoding" value="utf-8" />  
+        <property name="useCodeAsDefaultMessage" value="false" />  
+        <property name="cacheSeconds" value="60"></property>  
+        <property name="basenames">  
+            <list>  
+                <value>classpath:/config/reload</value>  
+            </list>  
+        </property>  
+     </bean>
+    
+	<!-- 获取本地 -->  
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+      	<property name="cookieName" value="CYOU-LANGUAGE-COOKIE"/>
+      	<property name="cookieMaxAge" value="94608000"/>
+      	<property name="defaultLocale" value="zh_CN" />  
+  	</bean> 
+  	
+  	
+  	<bean id="multipartResolver"
+        class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+         <!-- setting maximum upload size -->
+        <property name="maxUploadSize" value="100000000" />
+    </bean>
+ 
+ </beans>

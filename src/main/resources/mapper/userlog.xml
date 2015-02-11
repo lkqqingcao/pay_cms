@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mobogenie.pay.auth.dao.UserLogMapper">
+
+    <sql id="field">
+        id,
+        username,
+        createTime,
+        type,
+        message,
+        appId
+    </sql>
+
+
+    <sql id="orderby">
+        <if test='_orderby != null'>
+            order by
+            <foreach collection="_orderby" item="item" index="index" separator=",">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="limit">
+        <if test='_offset != null and _limit != null'>
+            limit #{_offset}, #{_limit}
+        </if>
+
+        <if test='_offset == null and _limit != null'>
+            limit #{_limit}
+        </if>
+    </sql>
+    
+    
+    
+     <sql id="condition">
+        <where>
+           <if test="userlog!=null" >
+            <if test="userlog.id != null">
+                and id = #{userlog.id}
+            </if>
+            <if test="userlog.message != null and userlog.message!='' ">
+                and message like "%"#{userlog.message}"%"
+            </if>             
+            <if test="userlog.username != null">
+                and username = #{userlog.username}              
+            </if>
+            <if test="userlog.type != null">
+                and type = #{userlog.type}              
+            </if>
+             <if test="userlog.startTime!= null">
+                and createTime >= #{userlog.startTime}
+             </if>
+             <if test="userlog.endTime!= null">
+                and createTime &lt; #{userlog.endTime}
+             </if>
+             <if test="userlog.appId!=null">
+                and APPID = #{userlog.appId}
+             </if>
+           </if>
+        </where>
+    </sql>
+
+
+    <select id="query" resultType="userlog">
+        select
+        <include refid="field"/>
+        from T_USERLOG
+         <include refid="condition"/>
+        order by createTime desc
+        <include refid="limit"/>
+    </select>
+    
+    
+    
+     <select id="count" resultType="_int">
+        select
+        count(ID)
+        from T_USERLOG
+        <include refid="condition"/>
+        order by createTime desc
+    </select>
+
+
+    <insert id="insert" parameterType="userlog">
+        insert into T_USERLOG
+        (
+            username,
+            message,
+            createTime,
+            type,
+            APPID
+        )
+        values
+        (
+           #{username},
+           #{message},
+           #{createTime},
+           #{type},
+           #{appId}
+         )
+    </insert>
+
+
+</mapper>

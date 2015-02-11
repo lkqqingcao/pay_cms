@@ -1,0 +1,188 @@
+/*
+ * It is advised not to edit the smartadmin_production.css
+ * as this will override any changes you make in the 
+ * later versions of this theme. 
+ * 
+ * We advise that you use use this CSS to override 
+ * SmartAdmin styles. 
+ * 
+ * Rename the stylesheet to whatever your liking so it will stay
+ * unique to you with each update of SmartAdmin.
+ */
+
+/*
+ * INDEX
+ * 
+ * - HTML
+ * - BODY
+ * - CUSTOM STYLES
+ */
+ .btn-outline {
+    background-color: transparent;
+    color: inherit;
+    transition: all .5s;
+}
+
+.btn-primary.btn-outline {
+    color: #428bca;
+}
+
+.btn-success.btn-outline {
+    color: #5cb85c;
+}
+
+.btn-info.btn-outline {
+    color: #5bc0de;
+}
+
+.btn-warning.btn-outline {
+    color: #f0ad4e;
+}
+
+.btn-danger.btn-outline {
+    color: #d9534f;
+}
+
+.btn.btn-form {
+    padding: 6px 12px !important;
+}
+
+.widget-body.no-padding-btm {
+   padding-bottom: 0px !important;
+}
+
+.btn-primary.btn-outline:hover,
+.btn-success.btn-outline:hover,
+.btn-info.btn-outline:hover,
+.btn-warning.btn-outline:hover,
+.btn-danger.btn-outline:hover {
+    color: #fff;
+}
+
+td.center, th.center {
+    text-align: center;
+}
+
+
+input.ace[type="checkbox"]{
+    cursor: pointer;
+    height: 18px;
+    opacity: 0;
+    position: absolute;
+    width: 18px;
+    z-index: 1;
+}
+
+input.ace[type="checkbox"]:checked, input.ace[type="checkbox"]:focus, input.ace[type="radio"]:checked, input.ace[type="radio"]:focus {
+    outline: 0 none !important;
+}
+input.ace[type="checkbox"] + .lbl {
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 400;
+    line-height: 20px;
+    margin: 0;
+    min-height: 18px;
+    min-width: 18px;
+    position: relative;
+}
+
+input.ace[type="checkbox"] + .lbl:before{
+    background-color: #fafafa;
+    border: 1px solid #c8c8c8;
+    border-radius: 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    color: #32a3ce;
+    content: " ";
+    cursor: pointer;
+    display: inline-block;
+    font-family: fontAwesome;
+    font-size: 12px;
+    font-weight: 400;
+    height: 16px;
+    line-height: 14px;
+    margin-right: 1px;
+    min-width: 16px;
+    position: relative;
+    text-align: center;
+    top: -1px;
+}
+input.ace[type="checkbox"]:checked + .lbl:before {
+    background-color: #f5f8fc;
+    border-color: #adb8c0;
+    content: "";
+    display: inline-block;
+}
+
+input.ace[type="checkbox"] + .lbl:hover:before, input.ace[type="checkbox"]:hover + .lbl:before {
+    border-color: #ff893c;
+}
+input.ace[type="checkbox"]:active + .lbl:before, input.ace[type="checkbox"]:checked:active + .lbl:before {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1) inset;
+}
+
+input.ace.disabled[type="checkbox"] + .lbl:before, input.ace[type="checkbox"]:disabled + .lbl:before, input.ace[type="checkbox"][disabled] + .lbl:before{
+    background-color: #ddd !important;
+    border-color: #ccc !important;
+    box-shadow: none !important;
+    color: #bbb;
+}
+
+
+/**old mobo cms start */
+/* 图片预览用-by sunyf */
+.p_img{ position:absolute; z-index:99999;}
+/* 提示框用-by sunyf */
+.p_tip{ position:absolute; width:300px; word-break:break-all; background:#fff; padding:10px 10px 10px 10px;border: solid 2px #7691D2; }
+/* 调序ul用-by sunyf */
+/**old mobo cms end */
+
+.clearfix:after, .win:after, .replies:after, .mainBg:after, .publicBg:after, .clearFix:after, #stock:after, .wrapper:after {
+    clear: both;
+    content: ".";
+    display: block;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+}
+.replies .essence .postTime {
+    position: relative;
+    z-index: 2;
+}
+.replies .postTime {
+    display: block;
+    float: right;
+    white-space: nowrap;
+}
+.replies .essence .body {
+    position: relative;
+    z-index: 0;
+}
+.replies .body {
+    clear: both;
+    font-size: 12px;
+    padding: 12px 0;
+    white-space: normal;
+    word-break: break-all;
+}
+.replies .operations {
+   float: left;
+    height: 16px;
+    line-height: 16px;
+	border-top: 1px dotted #afafb0 repeat;
+}
+.replies ul,.replies ol {
+    list-style-type: none;
+}
+.postbody{
+    line-height: 21px;
+	margin-bottom: 3px;
+	zoom: 1; 
+	word-wrap: break-word;
+	overflow:hidden;
+}
+.replies .operations li {
+    float: right;
+    padding-left: 1.2em;
+}
+

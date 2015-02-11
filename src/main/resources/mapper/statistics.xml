@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mobogenie.pay.statistics.dao.StatisticsMapper">
+
+    
+   <select id="queryProduceAmountFor10" resultType="statistics">
+           select  t.PRODUCT_NAME as produceName,sum(t.AMOUNT) as amountSum   from t_order t  group by t.PRODUCT_NAME  order by sum(t.AMOUNT) desc  
+    </select>
+       <select id="queryProduceNumFor10" resultType="statistics">
+         
+            select  t.PRODUCT_NAME as produceName,count(t.PRODUCT_NAME) as amountSum   from t_order t  group by t.PRODUCT_NAME  order by count(t.PRODUCT_NAME) desc 
+    </select>
+</mapper>

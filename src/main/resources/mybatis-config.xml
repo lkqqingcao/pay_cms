@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<settings>
+		<!-- 这个配置使全局的映射器启用或禁用缓存 -->
+		<setting name="cacheEnabled" value="false" />
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+		<setting name="useGeneratedKeys" value="true" />
+		<setting name="safeRowBoundsEnabled" value="false" />
+		<setting name="defaultExecutorType" value="REUSE" />
+		<!-- 设置超时时间，它决定驱动等待一个数据库响应的时间 -->
+		<setting name="defaultStatementTimeout" value="600" />
+	</settings>
+
+
+	<typeAliases>
+		<typeAlias type="com.mobogenie.framework.beans.UserLog"
+			alias="userlog" />
+		<typeAlias type="com.mobogenie.pay.auth.domain.User" alias="user" />
+		<typeAlias type="com.mobogenie.pay.auth.domain.Resource"
+			alias="resource" />
+		<typeAlias type="com.mobogenie.pay.auth.domain.ResourceRole"
+			alias="resourceRole" />
+		<typeAlias type="com.mobogenie.pay.auth.domain.Role" alias="role" />
+		<typeAlias type="com.mobogenie.pay.auth.domain.RoleUser"
+			alias="roleUser" />
+		<typeAlias type="com.mobogenie.pay.game.domain.Game" alias="game" />
+		<typeAlias type="com.mobogenie.pay.game.domain.GameCount" alias="gameCount" />
+		
+		<typeAlias type="com.mobogenie.pay.statistics.domain.Statistics" alias="statistics" />
+	
+	</typeAliases>
+
+	<typeHandlers>
+	</typeHandlers>
+
+	<mappers>
+		<mapper resource="mapper/resource.xml" />
+		<mapper resource="mapper/resourceRole.xml" />
+		<mapper resource="mapper/role.xml" />
+		<mapper resource="mapper/roleUser.xml" />
+		<mapper resource="mapper/user.xml" />
+		<mapper resource="mapper/userlog.xml" />
+		<mapper resource="mapper/game.xml" />
+		<mapper resource="mapper/statistics.xml" />
+	</mappers>
+
+
+</configuration>

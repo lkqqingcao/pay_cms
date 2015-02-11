@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mobogenie.social.module.game.dao.GameMapper">
+
+    <sql id="field">
+        ID,
+        UPDATE_TIME,
+        AUDIT_STATUS,
+        IS_DELETED,
+        IMG_PATH,
+        DETAIL,
+        APK_ID,
+        M_TYPE,
+        CREATE_TIME
+    </sql>
+
+
+    <sql id="orderby">
+        <if test='orderbys != null'>
+            order by
+            <foreach collection="orderbys" item="item" index="index" separator=",">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="limit">
+        <if test='extOffset != null and extLimit != null'>
+            limit #{extOffset}, #{extLimit}
+        </if>
+
+        <if test='extOffset == null and extLimit != null'>
+            limit #{extLimit}
+        </if>
+    </sql>
+    
+    
+    
+     <sql id="condition">
+        <where>
+            <if test="id != null">
+                and ID = #{id}
+            </if>
+            <if test="startTime != null">
+                and UPDATE_TIME <![CDATA[>=]]> #{startTime}  
+            </if>
+            <if test="endTime != null">
+                 and UPDATE_TIME <![CDATA[<]]> #{endTime}  
+            </if>
+            <if test="auditStatus != null and auditStatus!=-1">
+                and AUDIT_STATUS = #{auditStatus}
+            </if>
+            <choose>
+             <when test="isDeleted != null and isDeleted!=-1">
+                and IS_DELETED = #{isDeleted}
+            </when>
+             <otherwise>
+                and IS_DELETED = 0
+            </otherwise>
+            </choose>
+             <if test="imgPath != null and imgPath!='' ">
+                and IMG_PATH = #{imgPath}
+            </if>
+             <if test="apkId != null and apkId!='' ">
+                 <bind name="pattern" value="apkId + '%'" />
+                and APK_ID LIKE #{pattern}
+            </if>
+            <if test="mType != null and mType!=-1">
+                and M_TYPE = #{mType}
+            </if>
+        </where>
+    </sql>
+
+    <sql id="sets">
+        <set>
+            <if test="updateTime !=null">
+                UPDATE_TIME = #{updateTime},
+            </if>
+            <if test="auditStatus !=null">
+                AUDIT_STATUS = #{auditStatus},
+            </if>
+            <if test="isDeleted !=null">
+                IS_DELETED = #{isDeleted},
+            </if>
+            <if test="imgPath !=null">
+                IMG_PATH = #{imgPath},
+            </if>
+            <if test="detail !=null">
+                DETAIL = #{detail},
+            </if>
+            <if test="apkId !=null">
+                APK_ID = #{apkId},
+            </if>
+            <if test="mType != null">
+                M_TYPE = #{mType}
+            </if>
+        </set>
+    </sql>
+
+    <select id="query" resultType="game">
+        select
+        <include refid="field"/>
+        from T_GAME
+        <include refid="condition"/>
+        <include refid="limit"/>
+    </select>
+    
+     <select id="queryOne" resultType="game">
+        select
+        <include refid="field"/>
+        from T_GAME
+        <include refid="condition"/>
+        limit 1
+    </select>
+    
+    
+    
+    
+     <select id="count" resultType="_int">
+        select
+        count(id)
+        from T_GAME
+        <include refid="condition"/>
+    </select>
+    
+    <delete id="delete">
+       delete from T_GAME
+       where  ID=#{id}#
+    </delete>
+
+    <update id="update" >
+        update T_GAME
+        <include refid="sets"/>
+        where  ID=#{id};
+     </update>
+
+    <insert id="insert" parameterType="game">
+        insert into T_GAME
+        (   ID,
+	        UPDATE_TIME,
+	        AUDIT_STATUS,
+	        IS_DELETED,
+	        IMG_PATH,
+	        DETAIL,
+	        APK_ID,
+	        M_TYPE,
+	        CREATE_TIME
+        )values
+        (
+           #{id},
+           #{updateTime},
+           #{auditStatus},
+           #{isDeleted},
+           #{imgPath},
+           #{detail},
+           #{apkId},
+           #{mType},
+           #{createTime}
+        )
+    </insert>
+
+
+</mapper>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mobogenie.social.auth.dao.RoleUserMapper">
+
+    <sql id="field">
+        id,
+        userid as userId,
+        roleid as roleId
+    </sql>
+
+
+    <sql id="orderby">
+        <if test='_orderby != null'>
+            order by
+            <foreach collection="_orderby" item="item" index="index" separator=",">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="limit">
+        <if test='_offset != null and _limit != null'>
+            limit #{_offset}, #{_limit}
+        </if>
+
+        <if test='_offset == null and _limit != null'>
+            limit #{_limit}
+        </if>
+    </sql>
+    
+    <sql id="condition">
+        <where>
+            <if test="userId != null">
+                and userId = #{userId}
+            </if>
+            <if test="roleId != null">
+                and roleid = #{roleId}
+            </if>
+        </where>
+    </sql>
+    
+      <sql id="notRoleId">
+        <where>
+            <if test="userId != null">
+                and userId = #{userId}
+            </if>
+            <if test="roleId != null">
+                and roleid != #{roleId}
+            </if>
+        </where>
+    </sql>
+
+    <sql id="sets">
+        <set>
+            <if test="userId !=null">
+                userId = #{userId},
+            </if>
+            <if test="roleid !=null">
+                roleid = #{roleid},
+            </if>
+        </set>
+    </sql>
+
+    <select id="query" resultType="roleUser">
+        select
+        <include refid="field"/>
+        from T_USER_ROLE
+        where userid=#{userId}
+        order by id desc
+        <include refid="limit"/>
+    </select>
+    
+      <select id="queryNotAdmin" resultType="roleUser">
+        select
+        <include refid="field"/>
+        from T_USER_ROLE
+        <include refid="notRoleId"/>
+        order by id desc
+        <include refid="limit"/>
+    </select>
+    
+
+    <select id="queryUserByRoleId" resultType="roleUser">
+       select
+       <include refid="field"/>
+       from T_USER_ROLE
+       where roleId = #{roleId}
+    </select>
+
+
+    <select id="count" resultType="_int">
+        select count(1)
+        from T_USER_ROLE
+        where userid=#{userId}
+        order by id desc
+    </select>
+    
+    <delete id="delete">
+       delete from T_USER_ROLE
+       where  userId=#{userId}
+    </delete>
+
+    <insert id="insert" parameterType="roleUser">
+        insert into T_USER_ROLE
+        (
+            userid,
+            roleid
+        )values
+        (
+	        #{userId},
+	        #{roleId}
+        )
+    </insert>
+
+
+</mapper>

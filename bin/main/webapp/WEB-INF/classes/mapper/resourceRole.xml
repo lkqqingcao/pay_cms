@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mobogenie.social.auth.dao.ResourceRoleMapper">
+
+    <sql id="field">
+        id,
+        resourceid as resourceId,
+        roleid as roleId
+    </sql>
+
+
+    <sql id="orderby">
+        <if test='_orderby != null'>
+            order by
+            <foreach collection="_orderby" item="item" index="index" separator=",">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="limit">
+        <if test='_offset != null and _limit != null'>
+            limit #{_offset}, #{_limit}
+        </if>
+
+        <if test='_offset == null and _limit != null'>
+            limit #{_limit}
+        </if>
+    </sql>
+    
+    <sql id="condition">
+        <where>
+            <if test="id!= null">
+                and id = #{id}
+            </if>
+            <if test="resourceid != null">
+                and resourceid = #{resourceid}
+            </if>
+            <if test="roleid != null">
+                and roleid = #{roleid}
+            </if>
+        </where>
+    </sql>
+
+    <sql id="sets">
+        <set>
+            <if test="resourceid !=null">
+                resourceid = #{resourceid},
+            </if>
+            <if test="roleid !=null">
+                roleid = #{roleid},
+            </if>
+        </set>
+    </sql>
+
+    <select id="query" resultType="resourceRole">
+        select
+        <include refid="field"/>
+        from T_RESOURCE_ROLE
+        where roleId=#{roleId}
+        order by id desc
+        <include refid="limit"/>
+    </select>
+    
+     <select id="count" resultType="resourceRole">
+        select
+        count(1)
+        from T_RESOURCE_ROLE
+        where roleId=#{roleId}
+        order by id desc
+        <include refid="limit"/>
+    </select>
+
+    <delete id="delete">
+       delete from T_RESOURCE_ROLE
+       where  roleId=#{roleId}
+    </delete>
+    
+
+    <insert id="insert" >
+        insert into T_RESOURCE_ROLE
+        (
+		      resourceid,
+		      roleid
+        )values
+        (
+	          #{resourceId},
+	          #{roleId}
+        )
+    </insert>
+
+
+</mapper>

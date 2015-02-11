@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mobogenie.pay.auth.dao.ResourceMapper">
+
+    <sql id="field">
+        id,
+        pattern,
+        name,
+        description,
+        parentid,
+        level,
+        path,
+        isDelete
+    </sql>
+
+
+    <sql id="orderby">
+        <if test='_orderby != null'>
+            order by
+            <foreach collection="_orderby" item="item" index="index" separator=",">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="limit">
+        <if test='_offset != null and _limit != null'>
+            limit #{_offset}, #{_limit}
+        </if>
+
+        <if test='_offset == null and _limit != null'>
+            limit #{_limit}
+        </if>
+    </sql>
+    
+    <sql id="condition">
+        <where>
+            <if test="id!= null">
+                and id = #{id}
+            </if>
+            <if test="username != null">
+                and pattern = #{pattern}
+            </if>
+            <if test="parentid != null">
+                and parentid = #{parentid}
+            </if>
+        </where>
+    </sql>
+
+    <sql id="sets">
+        <set>
+            <if test="pattern !=null">
+                pattern = #{pattern},
+            </if>
+            <if test="name !=null">
+                name = #{name},
+            </if>
+            <if test="description !=null">
+                description = #{description},
+            </if>
+            <if test="parentid !=null">
+                parentid = #{parentid},
+            </if>
+             <if test="level != null">
+                level = #{level}
+            </if>
+               <if test="path != null">
+                path =  #{path}
+            </if>
+            <if test="isDelete != null">
+                isDelete = #{isDelete}
+            </if>
+        </set>
+    </sql>
+
+    <select id="query" resultType="resource">
+        select
+        <include refid="field"/>
+        from T_RESOURCE
+        <if test="resource!=null">        
+        <include refid="condition"/>
+        </if>
+        order by id desc
+        <include refid="limit"/>
+    </select>
+    
+    <select id="queryById" resultType="resource">
+        select
+        <include refid="field"/>
+        from T_RESOURCE
+        where id = #{resourceId}
+    </select>
+    
+    
+    
+     <select id="count" resultType="_int">
+        select
+        count(ID)
+        from T_RESOURCE
+         <if test="resource!=null">        
+        <include refid="condition"/>
+        </if>
+        order by id desc
+        <include refid="limit"/>
+    </select>
+
+    <update id="update" >
+        update T_RESOURCE
+        <include refid="sets"/>
+        where id=#{id}
+    </update>
+
+    <insert id="insert" parameterType="resource">
+        insert into T_RESOURCE
+        (     
+               name,
+		       pattern,
+		       description,
+		       parentid,
+		       level,
+		       path,
+		       isDelete
+        )values
+        (
+              #{name},
+	          #{pattern},
+	          #{description},
+	          #{parentId},
+	          #{level},
+	          #{path},
+	          #{isDelete}
+        )
+    </insert>
+
+
+</mapper>

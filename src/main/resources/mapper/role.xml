@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mobogenie.pay.auth.dao.RoleMapper">
+
+    <sql id="field">
+        id,
+        description as description,
+        name as name
+    </sql>
+    
+    <sql id="orderby">
+        <if test='_orderby != null'>
+            order by
+            <foreach collection="_orderby" item="item" index="index" separator=",">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="limit">
+        <if test='_offset != null and _limit != null'>
+            limit #{_offset}, #{_limit}
+        </if>
+
+        <if test='_offset == null and _limit != null'>
+            limit #{_limit}
+        </if>
+    </sql>
+    
+    <sql id="condition">
+        <where>
+            <if test="role.name != null">
+                and name = #{role.name}
+            </if>
+            <if test="role.description != null">
+                and description = #{role.description}
+            </if>
+        </where>
+    </sql>
+    
+    
+    <sql id="not_admin">
+        <where>
+           name != "ROLE_ADMIN" 
+        </where>
+    </sql>
+
+    <sql id="sets">
+        <set>
+            <if test="description !=null">
+                description = #{description},
+            </if>
+            <if test="name !=null">
+                name = #{name},
+            </if>
+        </set>
+    </sql>
+
+    <select id="query" resultType="role">
+        select
+        <include refid="field"/>
+        from T_ROLE
+        <if test="role!=null">
+          <include refid="condition"/>
+        </if>
+        order by id desc
+        <include refid="limit"/>
+    </select>
+    
+    <select id="queryAll" resultType="role">
+        select
+        <include refid="field"/>
+        from T_ROLE
+        order by id desc
+    </select>
+    
+     <select id="queryNotAdmin" resultType="role">
+        select
+        <include refid="field"/>
+        from T_ROLE
+        <include refid="not_admin" />
+        order by id desc
+    </select>
+    
+     <select id="countNotAdmin" resultType="_int">
+        select count(1)
+        <include refid="field"/>
+        from T_ROLE
+        <include refid="not_admin" />
+        order by id desc
+    </select>
+    
+    <select id="queryById" resultType="role">
+        select
+        <include refid="field"/>
+        from T_ROLE
+        where id = #{roleId}
+        order by id desc
+    </select>
+    
+     <select id="count" resultType="_int">
+        select
+        count(ID)
+        from T_ROLE
+         <if test="role!=null">
+           <include refid="condition"/>
+         </if>
+        order by id desc
+        <include refid="limit"/>
+    </select>
+
+    <update id="update" parameterType="role">
+        update T_ROLE
+        <include refid="sets"/>
+        where id = #{roleId};
+    </update>
+
+    <insert id="insert" parameterType="role">
+        insert into T_ROLE
+        (
+            description,
+            name
+        )values
+        (
+            #{description},
+            #{name}
+        )
+    </insert>
+
+
+</mapper>
