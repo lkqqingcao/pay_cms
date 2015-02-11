@@ -3,3 +3,9 @@ target
 out
 *.iml
 catalina.*
+.svn
+.settings
+.mymetadata
+.myportletdata
+.project
+bin
